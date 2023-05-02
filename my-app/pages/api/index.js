@@ -41,22 +41,22 @@ export default function Home() {
       console.error(error);
     }
   };
-  
+
   /**
    * getOwner: gets the contract owner by connected address
    */
   const getDAOOwner = async () => {
     try {
-        const signer   = await getProviderOrSigner(true);
-        const contract = getDaoContractInstance(signer);
+      const signer = await getProviderOrSigner(true);
+      const contract = getDaoContractInstance(signer);
 
-        // call the owner function from the contract
-        const _owner  = await contract.owner();
-        // Get the address associated to signer which is connected to Metamask
-        const address = await signer.getAddress();
-        if (address.toLowerCase() === _owner.toLowerCase()) {
-          setIsOwner(true);
-        }
+      // call the owner function from the contract
+      const _owner = await contract.owner();
+      // Get the address associated to signer which is connected to Metamask
+      const address = await signer.getAddress();
+      if (address.toLowerCase() === _owner.toLowerCase()) {
+        setIsOwner(true);
+      }
     } catch (err) {
       console.error(err.message);
     }
@@ -68,7 +68,7 @@ export default function Home() {
    */
   const withdrawDAOEther = async () => {
     try {
-      const signer   = await getProviderOrSigner(true);
+      const signer = await getProviderOrSigner(true);
       const contract = getDaoContractInstance(signer);
 
       const tx = await contract.withdrawEther();
@@ -416,14 +416,17 @@ export default function Home() {
           {/* Display additional withdraw button if connected wallet is owner */}
           {isOwner ? (
             <div>
-            {loading ? <button className={styles.button}>Loading...</button>
-                     : <button className={styles.button} onClick={withdrawDAOEther}>
-                         Withdraw DAO ETH
-                       </button>
-            }
+              {loading ? (
+                <button className={styles.button}>Loading...</button>
+              ) : (
+                <button className={styles.button} onClick={withdrawDAOEther}>
+                  Withdraw DAO ETH
+                </button>
+              )}
             </div>
-            ) : ("")
-          }
+          ) : (
+            ""
+          )}
         </div>
         <div>
           <img className={styles.image} src="/cryptodevs/0.svg" />

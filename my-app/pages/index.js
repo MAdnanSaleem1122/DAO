@@ -1,6 +1,13 @@
-import { Contract, providers } from "ethers";
+// import { Contract, providers } from "ethers";
 import { formatEther } from "ethers/lib/utils";
 import Head from "next/head";
+import {
+  FaFacebook,
+  FaGoogle,
+  FaTwitter,
+  FaLinkedin,
+  FaYoutube,
+} from "react-icons/fa";
 import { useEffect, useRef, useState } from "react";
 import Web3Modal from "web3modal";
 import {
@@ -41,22 +48,22 @@ export default function Home() {
       console.error(error);
     }
   };
-  
+
   /**
    * getOwner: gets the contract owner by connected address
    */
   const getDAOOwner = async () => {
     try {
-        const signer   = await getProviderOrSigner(true);
-        const contract = getDaoContractInstance(signer);
+      const signer = await getProviderOrSigner(true);
+      const contract = getDaoContractInstance(signer);
 
-        // call the owner function from the contract
-        const _owner  = await contract.owner();
-        // Get the address associated to signer which is connected to Metamask
-        const address = await signer.getAddress();
-        if (address.toLowerCase() === _owner.toLowerCase()) {
-          setIsOwner(true);
-        }
+      // call the owner function from the contract
+      const _owner = await contract.owner();
+      // Get the address associated to signer which is connected to Metamask
+      const address = await signer.getAddress();
+      if (address.toLowerCase() === _owner.toLowerCase()) {
+        setIsOwner(true);
+      }
     } catch (err) {
       console.error(err.message);
     }
@@ -68,7 +75,7 @@ export default function Home() {
    */
   const withdrawDAOEther = async () => {
     try {
-      const signer   = await getProviderOrSigner(true);
+      const signer = await getProviderOrSigner(true);
       const contract = getDaoContractInstance(signer);
 
       const tx = await contract.withdrawEther();
@@ -379,59 +386,158 @@ export default function Home() {
   }
 
   return (
-    <div>
-      <Head>
-        <title>CryptoDevs DAO</title>
-        <meta name="description" content="CryptoDevs DAO" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+    <>
+      <div>
+        <Head>
+          <title>CryptoDevs DAO</title>
+          <meta name="description" content="CryptoDevs DAO" />
+          <link rel="icon" href="/favicon.ico" />
+        </Head>
+        <nav>
+          <div className="navbar-logo">
+            <img src="/cryptodevs/logo1.svg" alt="logo" />
+          </div>
 
-      <div className={styles.main}>
-        <div>
-          <h1 className={styles.title}>Welcome to Crypto Devs!</h1>
-          <div className={styles.description}>Welcome to the DAO!</div>
-          <div className={styles.description}>
-            Your CryptoDevs NFT Balance: {nftBalance}
-            <br />
-            Treasury Balance: {formatEther(treasuryBalance)} ETH
-            <br />
-            Total Number of Proposals: {numProposals}
+          <div>
+            <ul id="navbar">
+              <li>
+                <a className="active" href="#" alt="#">
+                  Drops
+                </a>
+              </li>
+              <li>
+                <a href="#" alt="">
+                  Market Place
+                </a>
+              </li>
+              <li>
+                <a href="#">About</a>
+              </li>
+              <li>
+                <a href="#">Contact Us</a>
+              </li>
+
+              <button className="btn">Connect Wallet</button>
+            </ul>
           </div>
-          <div className={styles.flex}>
-            <button
-              className={styles.button}
-              onClick={() => setSelectedTab("Create Proposal")}
-            >
-              Create Proposal
-            </button>
-            <button
-              className={styles.button}
-              onClick={() => setSelectedTab("View Proposals")}
-            >
-              View Proposals
-            </button>
-          </div>
-          {renderTabs()}
-          {/* Display additional withdraw button if connected wallet is owner */}
-          {isOwner ? (
-            <div>
-            {loading ? <button className={styles.button}>Loading...</button>
-                     : <button className={styles.button} onClick={withdrawDAOEther}>
-                         Withdraw DAO ETH
-                       </button>
-            }
+        </nav>
+
+        <div className={styles.main}>
+          <div>
+            <h1 className={styles.title}>Welcome to Crypto Devs</h1>
+            <div className={styles.description}>
+              Your CryptoDevs NFT Balance: {nftBalance}
+              <br />
+              Treasury Balance: {formatEther(treasuryBalance)} ETH
+              <br />
+              Total Number of Proposals: {numProposals}
             </div>
-            ) : ("")
-          }
+            <div className={styles.flex}>
+              <button
+                className={styles.button}
+                onClick={() => setSelectedTab("Create Proposal")}
+              >
+                Create Proposal
+              </button>
+              <button
+                className={styles.button}
+                onClick={() => setSelectedTab("View Proposals")}
+              >
+                View Proposals
+              </button>
+            </div>
+            {renderTabs()}
+            {/* Display additional withdraw button if connected wallet is owner */}
+            {isOwner ? (
+              <div>
+                {loading ? (
+                  <button className={styles.button}>Loading...</button>
+                ) : (
+                  <button className={styles.button} onClick={withdrawDAOEther}>
+                    Withdraw DAO ETH
+                  </button>
+                )}
+              </div>
+            ) : (
+              ""
+            )}
+          </div>
+          <div className="crypto-image">
+            <img className={styles.image} src="/cryptodevs/0.svg" />
+          </div>
         </div>
-        <div>
-          <img className={styles.image} src="/cryptodevs/0.svg" />
-        </div>
-      </div>
 
-      <footer className={styles.footer}>
-        Made with &#10084; by Crypto Devs DAO
-      </footer>
-    </div>
+        <footer>
+          <div className="footer-content">
+            <h3> Decentralized Autonomous Organization</h3>
+            <p>
+              In a DAO, however, this process is democratized, and any member
+              can create a proposal, and all other members can vote on it. Each
+              proposal created has a deadline for voting, and after the deadline
+              the decision is made in favour of the voting outcome.
+            </p>
+            <ul className="socials">
+              <li>
+                <a href="#">
+                  <i className="fa fa-facebook">
+                    <FaFacebook />
+                  </i>
+                </a>
+              </li>
+              <li>
+                <a href="#">
+                  <i className="fa fa-twitter">
+                    <FaTwitter />
+                  </i>
+                </a>
+              </li>
+              <li>
+                <a href="#">
+                  <i className="fa fa-google-plus">
+                    <FaGoogle />
+                  </i>
+                </a>
+              </li>
+              <li>
+                <a href="#">
+                  <i className="fa fa-youtube">
+                    <FaYoutube />
+                  </i>
+                </a>
+              </li>
+              <li>
+                <a href="#">
+                  <i className="fa fa-linkedin-square">
+                    <FaLinkedin />
+                  </i>
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div className="footer-bottom">
+            <p>
+              copyright &copy;{"   "}
+              <a href="#"> Decentralized Autonomous Organization</a>
+            </p>
+            <div className="footer-menu">
+              <ul className="f-menu">
+                <li>
+                  <a href="">Home</a>
+                </li>
+                <li>
+                  <a href="">About</a>
+                </li>
+                <li>
+                  <a href="">Contact</a>
+                </li>
+                <li>
+                  <a href="">Blog</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </footer>
+      </div>
+    </>
   );
 }
